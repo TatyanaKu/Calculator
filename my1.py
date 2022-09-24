@@ -7,27 +7,23 @@ root.title("Калькулятор")
 
 # логика калькулятора
 def calc(key):
-    global memory
     if key == "=":
 # исключаем написание букв
         str1 = "-+0123456789.*/"
         if calc_entry.get()[0] not in str1:
-            calc_entry.insert(END, "Первый символ не число!")
             messagebox.showerror("Ошибка!", "Вы ввели не число!")
 # счет
         try:
             result = eval(calc_entry.get())
-            calc_entry.insert(END, "=" + str(result))
+            calc_entry.delete(0, END)
+            calc_entry.insert(0, result)
         except:
-            calc_entry.insert(END, "Ошибка!")
             messagebox.showerror("Ошибка!", "Проверь правильность данных")        
 # очистить поле
     elif key == "C":
         calc_entry.delete(0, END)
 # смена +-
     elif key == "-/+":
-        if "=" in calc_entry.get():
-            calc_entry.delete(0, END)
         try:
             if calc_entry.get()[0] == "-":
                 calc_entry.delete(0)
@@ -36,8 +32,6 @@ def calc(key):
         except IndexError:
             pass
     else:
-        if "=" in calc_entry.get():
-            calc_entry.delete(0, END)
         calc_entry.insert(END, key)                   
 
 
@@ -53,7 +47,6 @@ r = 1
 c = 2
 
 for i in bttn_list:
-    rel = ""
     cmd=lambda x=i: calc(x)
     ttk.Button(root, text=i, command=cmd).grid(row=r, column=c)
     c += 1

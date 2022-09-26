@@ -6,36 +6,39 @@ root = Tk()
 root.title("Калькулятор")
 
 # логика калькулятора
+def calculate(calc_entry):
+    sym = "-+0123456789.*/"
+    if calc_entry.get()[0] not in sym:
+        messagebox.showerror("Ошибка!", "Вы ввели не число!")
+    try:
+        result = eval(calc_entry.get())
+        calc_entry.delete(0, END)
+        calc_entry.insert(0, result)
+    except:
+        messagebox.showerror("Ошибка!", "Проверь правильность данных")  
+
+def delet_last(calc_entry):
+    calc_entry.delete(0, END)
+
+def change_sign(calc_entry):
+    if calc_entry.get().startswith('-'):
+        calc_entry.delete(0)
+    else:
+        calc_entry.insert(0, "-")
+
+def append_token(calc_entry, key):
+    calc_entry.insert(END, key)
+
 def calc(key):
     if key == "=":
-# исключаем написание букв
-        str1 = "-+0123456789.*/"
-        if calc_entry.get()[0] not in str1:
-            messagebox.showerror("Ошибка!", "Вы ввели не число!")
-# счет
-        try:
-            result = eval(calc_entry.get())
-            calc_entry.delete(0, END)
-            calc_entry.insert(0, result)
-        except:
-            messagebox.showerror("Ошибка!", "Проверь правильность данных")        
-# очистить поле
+      calculate(calc_entry)  
     elif key == "C":
-        calc_entry.delete(0, END)
-# смена +-
+        delet_last(calc_entry)
     elif key == "-/+":
-        try:
-            if calc_entry.get()[0] == "-":
-                calc_entry.delete(0)
-            else:
-                calc_entry.insert(0, "-")
-        except IndexError:
-            pass
+        change_sign(calc_entry)
     else:
-        calc_entry.insert(END, key)                   
-
-
-
+        append_token(calc_entry, key)
+                    
 # создание кнопок
 bttn_list = [
     "7", "8", "9", "+", "-",
